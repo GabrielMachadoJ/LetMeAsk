@@ -1,15 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-
-import { AuthContext } from '../App';
-
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-
+import { useAuth } from '../hooks/useAuth'
 
 import illustrationImg from '../assets/images/illustration.svg';
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/google-icon.svg';
-
 
 import { Button } from '../components/Button';
 
@@ -18,9 +12,12 @@ import '../styles/auth.scss'
 
 export function Home() {
     const history = useNavigate()
-    const { user, signInWithGoogle} = useContext(AuthContext)
+    const { user, signInWithGoogle} = useAuth()
 
-    function handleCreateRoom() {
+    async function handleCreateRoom() {
+        if (!user) {
+            await signInWithGoogle()
+        }
         history('/rooms/new')
     }
 
