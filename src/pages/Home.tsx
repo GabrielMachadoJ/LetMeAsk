@@ -21,6 +21,10 @@ export function Home() {
         history('/rooms/new')
     }
 
+    async function handleJoinRoom() {
+        
+    }
+
     return (
         <div id='page-auth'>
             <aside>
