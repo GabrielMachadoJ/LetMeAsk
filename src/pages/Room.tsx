@@ -19,6 +19,17 @@ type FirebaseQuestions = Record<string, {
     isHighlighted: boolean
 }>
 
+type Question = {
+    id: string,
+    author: {
+        name: string,
+        avatar: string,
+    }
+    content: string,
+    isAnswered: boolean,
+    isHighlighted: boolean
+}
+
 type RoomParams = {
     id: string;
 }
@@ -27,6 +38,8 @@ export function Room() {
     const { user } = useAuth()
     const params = useParams<RoomParams>();
     const [newQuestion, setNewQuestion] = useState('')
+    const [question, setQuestion] = useState<Question[]>([])
+    const [title, setTitle] = useState('')
 
     const roomId = params.id;
 
@@ -44,10 +57,11 @@ export function Room() {
                     isAnswered: value.isAnswered
                 }
             })
-            console.log(parsedQuestion)
             
+            setTitle(value.title)
+            setQuestion(parsedQuestion)
         }, {
-            onlyOnce: true,
+            onlyOnce: false,
         })
     }, [roomId])
 
@@ -73,7 +87,7 @@ export function Room() {
         }
 
         const roomRef = ref(db, `rooms/${roomId}/questions`)
-        const firebaseRoom = push(roomRef, question)
+        push(roomRef, question)
 
         setNewQuestion('')
     }
@@ -89,8 +103,8 @@ export function Room() {
 
             <main className='content'>
                 <div className='room-title'>
-                    <h1>Sala React</h1>
-                    <span>4 perguntas</span>
+                    <h1>Sala {title}</h1>
+                    { question.length > 0 && <span>{question.length} pergunta(s)</span>}
                 </div>
 
                 <form onSubmit={handleSendQuestion}>
@@ -111,6 +125,7 @@ export function Room() {
                         <Button type='submit' disabled={!user}>Enviar pergunta</Button>
                     </div>
                 </form>
+                {JSON.stringify(question)}
             </main>
         </div>
     );
