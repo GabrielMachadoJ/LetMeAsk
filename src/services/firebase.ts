@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 
 import { getAuth } from "firebase/auth";
-import { getDatabase, ref, set, child, push, onValue, remove } from "firebase/database";
+import { getDatabase, ref, set, child, push, onValue, remove, update } from "firebase/database";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -20,4 +20,4 @@ const auth = getAuth(app)
 const db = getDatabase(app)
 const dbRef = ref(db)
 
-export { auth, db, dbRef, child, set, ref, push, remove, onValue }
+export { auth, db, dbRef, child, set, ref, push, remove, onValue, update }

@@ -40,6 +40,11 @@ export function Home() {
                 alert('Room does not exist.')
                 return
             }
+
+            if (snapshot.val().endedAt) {
+                alert('Room already closed')
+                return
+            }
             history(`/rooms/${roomCode}`)
           })
 
